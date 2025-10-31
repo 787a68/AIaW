@@ -1,4 +1,4 @@
-name: Sync Upstream and Build Image
+name: Sync Upstream (NitroRCr/AIaW) and Build Image
 
 on:
   # 1. 每周一的凌晨2点 (UTC) 自动运行
@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 步骤 1: 从新的上游仓库获取最新的 release 标签名
+      # 步骤 1: 从上游仓库获取最新的 release 标签名
       - name: Get latest upstream release tag
         id: get_tag
         run: |
@@ -29,18 +29,16 @@ jobs:
           echo "Latest upstream tag is: $TAG"
           echo "TAG=$TAG" >> $GITHUB_OUTPUT
 
-      # 步骤 2: 使用获取到的标签，检出新的上游仓库的源代码
+      # 步骤 2: 使用获取到的标签，检出上游仓库的源代码
       - name: Checkout upstream repository at latest tag
         uses: actions/checkout@v4
         with:
           repository: NitroRCr/AIaW
           ref: ${{ steps.get_tag.outputs.TAG }}
 
-      # 步骤 3: 将 DEXIE_DB_URL 追加到已存在的 .env.docker 文件中
       - name: Append DEXIE_DB_URL to .env.docker
-        if: secrets.DEXIE_DB_URL
         run: |
-          echo "Appending DEXIE_DB_URL to existing .env.docker file..."
+          echo "Unconditionally appending DEXIE_DB_URL to .env.docker..."
           echo "" >> .env.docker
           echo "DEXIE_DB_URL=${{ secrets.DEXIE_DB_URL }}" >> .env.docker
           echo "Final contents of .env.docker:"
