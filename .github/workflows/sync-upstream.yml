@@ -38,7 +38,7 @@ jobs:
 
       # 步骤 3: 将 DEXIE_DB_URL 追加到已存在的 .env.docker 文件中
       - name: Append DEXIE_DB_URL to .env.docker
-        if: secrets.DEXIE_DB_URL != ''
+        if: secrets.DEXIE_DB_URL
         run: |
           echo "Appending DEXIE_DB_URL to existing .env.docker file..."
           echo "" >> .env.docker
